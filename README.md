@@ -1,0 +1,2 @@
+# WX_XCX_plugin_demo
+微信原生写的一个使用wx小程序插件的demo
