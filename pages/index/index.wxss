@@ -1,0 +1,17 @@
+/* pages/index/index.wxss */
+.bt2,.bt3{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.bt2 button{
+  width: 45%;
+  padding: 2px 5px;
+}
+.bt3 button{
+  width: 30%;
+  padding: 2px 5px;
+}

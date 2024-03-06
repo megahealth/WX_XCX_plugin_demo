@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/scan/scan",
+    "pages/index/index"
+  ],
+  "plugins": {
+    "megable": {
+      "version": "1.1.13",
+      "provider": "wxf4fa9b179dfd7bca"
+    }
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarBackgroundColor": "#ffffff"
+  }
+}
