@@ -218,13 +218,22 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - startWithToken(userId, token)
     - 用户id格式：12个byte组成的十六进制字符串，总长24。若不关心userid，可使用模板"5837288dc59e0d00577c5f9a"，或12个"00"
+    
   - setUserInfo(age, gender, height, weight, stepLength)
     - 女(0), 男(1); 身高(cm); 体重(kg); 步长(cm)
     - 例：client.setUserInfo(25, 1, 170, 60, 0)
+    
   - enableRealTimeNotify(enable)
     - 打开全局实时通道，接收实时数据（血氧、电量值，电量状态等），可重复调用
+    
   - enableLive(enable)
-    - 开启血氧实时模式
+    
+    开启血氧实时模式
+    
+  - setPulseMode(enable,time)
+    
+    - 开启/关闭脉诊(time默认1000ms)
+    
   - enableMonitor(enable）
     - 开启血氧监测模式
     - syncData()
@@ -341,8 +350,14 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
     收到血氧实时模式live数据; status参考STATUS_LIVE列表
 
-  - onSetUserInfo: () => {}
+  - ontPulse: (byte) => {
 
+    ​	收到脉诊实时原始数据; 
+  
+    }
+  
+  - onSetUserInfo: () => {}
+  
     - 设置用户信息 【 必须预设一个用户信息，否者每次连接都会被认为是新用户 ，提示晃动戒指】
   
   - onSetUserInfo() { client.setUserInfo(25, 1, 170, 60, 0 ) } 年龄、性别、身高、体重、步长
@@ -409,4 +424,36 @@ ERROR_BIND                      : 40000,
   MODE_LIVE               : 4, // 实时模式(血氧)
   MODE_BP                 : 5, // bp模式
 ```
+
+# 使用插件
+
+在app.json设置导入插件
+
+```
+  "plugins": {
+    "megable": {
+      "version": "1.2.0",//插件版本
+      "provider": "wxf4fa9b179dfd7bca" //插件id
+    }
+  },
+```
+
+# 版本更新
+
+## 1.2.0
+
+```
+1.添加脉诊模式
+  1.1脉诊回调 ontPulse()=>{} ps:原始数据
+  1.2脉诊设置setPulseMode(true/false,输出间隔(默认1000ms))
+2.扫描添加 sn、mac
+```
+
+## 1.1.3
+
+````
+1.修复断开后无法立刻搜索到设备的问题
+````
+
+
 

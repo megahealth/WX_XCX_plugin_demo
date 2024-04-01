@@ -141,6 +141,10 @@ Page({
         };
         wx.request(options)
       },
+      //脉诊原始数据
+      ontPulse:(bytes)=>{
+        console.log("onSyncDailyDataComplete",bytes);
+      },
       //日常
       onSyncDailyDataComplete: (bytes) => {
         console.log("onSyncDailyDataComplete: ", bytes);
@@ -298,6 +302,15 @@ Page({
       this.setData({LiveSleep:null})
       return
     }
+  },
+  openPulse(event){
+    if(event.currentTarget.dataset.enable==='true'){
+      this.data.client.setPulseMode(true,1000)
+    }
+    if(event.currentTarget.dataset.enable==='false'){
+      this.data.client.setPulseMode(false)
+    }
+    console.log(`output->event.currentTarget.dataset`,event.currentTarget.dataset)
   },
   getData(){
     // if(![0,1,2].includes(this.data.heartBeat.deviceStatus)){

@@ -54,6 +54,10 @@
     <button bindtap="onLiveSleep" data-enable="true">开启睡眠监测</button>
     <button bindtap="onLiveSleep" data-enable="false">关闭睡眠监测</button>
   </view>
+  <view class="bt2">
+    <button bindtap="openPulse" data-enable="true">开启脉诊</button>
+    <button bindtap="openPulse" data-enable="false">关闭脉诊</button>
+  </view>
   <view>
     <button bindtap="getData">收取数据</button>
   </view>

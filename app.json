@@ -5,7 +5,7 @@
   ],
   "plugins": {
     "megable": {
-      "version": "1.1.13",
+      "version": "1.2.0",
       "provider": "wxf4fa9b179dfd7bca"
     }
   },
