@@ -143,7 +143,7 @@ Page({
       },
       //脉诊原始数据
       ontPulse:(bytes)=>{
-        console.log("onSyncDailyDataComplete",bytes);
+        console.log("onRawdataPulseParsed",bytes);
       },
       //日常
       onSyncDailyDataComplete: (bytes) => {
