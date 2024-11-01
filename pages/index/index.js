@@ -24,6 +24,7 @@ Page({
       title: 'loading',
     })
     const client = await initSdk(this.data.APPID, this.data.APPKEY, wx)
+    console.log('client ====> ',client)
     client.setCallback(this.genMegaCallback());
     this.data.client = client
     this.connect()
