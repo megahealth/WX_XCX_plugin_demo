@@ -36,6 +36,12 @@ Page({
       },
       onConnectionStateChange: (res) => {
         console.log("connection change: ", res);
+        if(res.connected===false){
+          wx.clearStorage()
+          wx.redirectTo({
+            url: '/pages/scan/scan'
+          })
+        }
       },
       //电量变化
       onBatteryChanged: (value, status) => {
