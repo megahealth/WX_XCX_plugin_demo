@@ -325,13 +325,13 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - onV2LiveSleep: v2LiveSleep => {
 
-    ​ pr:心率,
+     pr:心率,
 
-    ​ spo:血氧，
+     spo:血氧，
 
-    ​ status：实时值状态指示,
+     status：实时值状态指示,
 
-    ​ duration：持续时长（s）
+     duration：持续时长（s）
 
     }
 
@@ -341,7 +341,7 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - onV2LiveSpoMonitor: v2LiveSpoMonitor => {
 
-    ​ pr,spo,status (同上)
+     pr,spo,status (同上)
 
     }
 
@@ -349,7 +349,7 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - ontPulse: (byte) => {
 
-    ​ 收到脉诊实时原始数据;
+     收到脉诊实时原始数据;
 
     }
 
@@ -471,4 +471,19 @@ ERROR_BIND                      : 40000,
 ```
 1.数据收取 由固定版本修改为3.x、5.x、6.x
 ```
+
+## 1.4.2
+
+````
+1.新增报告快速收取
+	client.quickReport()
+2.新增HRV收取
+	接口 client.syncBpAndHrvData(1)
+3.新增BP收取
+  接口 client.syncBpAndHrvData(1)
+4.HRV和BP数据
+	数据回调:onSyncMonitorDataComplete
+	无数据回调:onSyncNoDataOfMonitor
+	进度回调:onSyncingDataProgress
+````
 

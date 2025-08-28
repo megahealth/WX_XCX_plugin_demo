@@ -60,6 +60,11 @@
   </view>
   <view>
     <button bindtap="getData">收取数据</button>
+    <button bindtap="quickReport">快速收取</button>
+  </view>
+  <view class="bt2">
+      <button bindtap="getBP" data-enable="true">收取BP</button>
+      <button bindtap="getHRV" data-enable="false">收取HRV</button>
   </view>
   <view>
     <button bindtap="discover">解绑</button>

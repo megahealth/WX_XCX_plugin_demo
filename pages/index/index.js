@@ -88,65 +88,65 @@ Page({
       },
       //收取睡眠
       onSyncMonitorDataComplete: (bytes, dataStopType, dataType, deviceInfo) => {
-        // wx.hideLoading()
-        console.log(bytes);
-        const DeviceInfo = {
-          mac: deviceInfo.mac,
-          sn: deviceInfo.sn,
-          swVer: deviceInfo.swVer,
-        };
-        const reportType = {
-          dataType: dataType,
-          dataStopType: dataStopType,
-        };
-        const institutionId = "5d5ce86aba39c800671c5a89";
-        // 组织formdata需要
-        const boundary = `----MegaRing${new Date().getTime()}`;
+        console.log('onSyncMonitorDataComplete',bytes);
+        wx.hideLoading()
+        // const DeviceInfo = {
+        //   mac: deviceInfo.mac,
+        //   sn: deviceInfo.sn,
+        //   swVer: deviceInfo.swVer,
+        // };
+        // const reportType = {
+        //   dataType: dataType,
+        //   dataStopType: dataStopType,
+        // };
+        // const institutionId = "5d5ce86aba39c800671c5a89";
+        // // 组织formdata需要
+        // const boundary = `----MegaRing${new Date().getTime()}`;
         //构建formdata
-        function createFormData(params = {}, boundary = "") {
-          let result = "";
-          for (let i in params) {
-            result += `\r\n--${boundary}`;
-            result += `\r\nContent-Disposition: form-data; name="${i}"`;
-            result += "\r\n";
-            result += `\r\n${params[i]}`;
-          }
-          // 如果obj不为空，则最后一行加上boundary
-          if (result) {
-            result += `\r\n--${boundary}`;
-          }
-          return result;
-        }
-        const formData = createFormData({
-            binData: bytes,
-            institutionId: institutionId,
-            remoteDevice: JSON.stringify(DeviceInfo),
-            reportType: JSON.stringify(reportType),
-          },
-          boundary
-        );
+        // function createFormData(params = {}, boundary = "") {
+        //   let result = "";
+        //   for (let i in params) {
+        //     result += `\r\n--${boundary}`;
+        //     result += `\r\nContent-Disposition: form-data; name="${i}"`;
+        //     result += "\r\n";
+        //     result += `\r\n${params[i]}`;
+        //   }
+        //   // 如果obj不为空，则最后一行加上boundary
+        //   if (result) {
+        //     result += `\r\n--${boundary}`;
+        //   }
+        //   return result;
+        // }
+        // const formData = createFormData({
+        //     binData: bytes,
+        //     institutionId: institutionId,
+        //     remoteDevice: JSON.stringify(DeviceInfo),
+        //     reportType: JSON.stringify(reportType),
+        //   },
+        //   boundary
+        // );
         // console.log('formData',formData);
         // request的options
-        const options = {
-          method: "POST",
-          url: "https://server-mhn.megahealth.cn/upload//uploadBinData",
-          header: {
-            'content-type': 'application/json',
-            'X-LC-Id': 'f82OcAshk5Q1J993fGLJ4bbs-gzGzoHsz',
-            'X-LC-Key': 'O9COJzi78yYXCWVWMkLqlpp8',
-            "Content-Type": `multipart/form-data; boundary=${boundary}`,
-          },
-          data: formData,
-          success (res) {
-            // console.log("report", res);
-            console.log("url:",'https://raw.megahealth.cn/parse/parsemhn?objId=' + res.data.reportId);
-            //拿到res中的报告id调用后处理接口得到json数据： url = 'https://raw.megahealth.cn/parse/parsemhn?objId=' + reportId;
-          },
-          fail(err){
-            console.log(err);
-          }
-        };
-        wx.request(options)
+        // const options = {
+        //   method: "POST",
+        //   url: "https://server-mhn.megahealth.cn/upload//uploadBinData",
+        //   header: {
+        //     'content-type': 'application/json',
+        //     'X-LC-Id': 'f82OcAshk5Q1J993fGLJ4bbs-gzGzoHsz',
+        //     'X-LC-Key': 'O9COJzi78yYXCWVWMkLqlpp8',
+        //     "Content-Type": `multipart/form-data; boundary=${boundary}`,
+        //   },
+        //   data: formData,
+        //   success (res) {
+        //     // console.log("report", res);
+        //     console.log("url:",'https://raw.megahealth.cn/parse/parsemhn?objId=' + res.data.reportId);
+        //     //拿到res中的报告id调用后处理接口得到json数据： url = 'https://raw.megahealth.cn/parse/parsemhn?objId=' + reportId;
+        //   },
+        //   fail(err){
+        //     console.log(err);
+        //   }
+        // };
+        // wx.request(options)
       },
       //脉诊原始数据
       ontPulse:(bytes)=>{
@@ -333,6 +333,15 @@ Page({
     }else{
       this.data.client.syncData()
     }
+  },
+  quickReport(){
+      this.data.client.quickReport()
+  },
+  getBP(){
+      this.data.client.syncBpAndHrvData(1)
+  },
+  getHRV(){
+      this.data.client.syncBpAndHrvData(2)
   },
   discover(){
     this.data.client.disconnect()
