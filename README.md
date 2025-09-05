@@ -141,62 +141,11 @@ client.connect(device.name, device.deviceId, device.advertisData).then(res => {
 ```
 const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) => {
       console.log('onSyncMonitorDataComplete: ', bytes, dataStopType, dataType, deviceInfo);
-      // 由于数据只能收取一次，而调用接口上传可能会出现错误，导致直接丢失，所以拿到bytes之后，请存到localStorage里，上传成功后删除，上传失败后，在进行其他操作。
+      // 由于数据只能收取一次，而调用接口上传可能会出现错误，导致直接丢失，所以拿到bytes之后，请存到		localStorage里，上传成功后删除，上传失败后，在进行其他操作。
       // bytes 为base64格式的数据
-      // deviceInfo为戒指信息，可以在蓝牙搜索和连接戒指的时候获取到这些信息。
-      const DeviceInfo ={
-        "mac": deviceInfo.mac,
-        "sn": deviceInfo.sn,
-        "swVer": deviceInfo.swVer
-      }
-      // 报告类型
-      const reportType = {
-          "dataType":dataType.toString(),
-        "dataStopType":dataStopType.toString()
-      }
-      // 机构id
-      const institutionId = '5d5ce86aba39c800671c5a89'
-
-            // 组织formdata需要
-      const boundary = `----MegaRing${new Date().getTime()}`;
-      //构建formdata
-      const formData =
-          createFormData({ binData: bytes, institutionId:institutionId, remoteDevice:JSON.stringify(DeviceInfo), reportType:JSON.stringify(reportType)}, boundary)
-
-      // request的options
-      var options = {
-        method: 'POST',
-        url: 'https://server-mhn.megahealth.cn/upload//uploadBinData',
-        header: {
-          'Accept': 'application/json',
-          'Content-Type': `multipart/form-data; boundary=${boundary}`,
-        },
-        data:formData
-      };
-      // 请求接口返回报告id
-      wx.request(options).then(res=>{
-        console.log('report',res);
-        //拿到res中的报告id调用后处理接口得到json数据： url = 'https://raw.megahealth.cn/parse/parsemhn?objId=' + reportId;
-      }).catch(err=>{
-        console.log(err);
-      })
-      dispatch(uploadSptData(bytes))
-    }
-
-     // 构建formdata方法
- const createFormData = (params = {}, boundary = '') => {
-  let result = '';
-  for (let i in params) {
-    result += `\r\n--${boundary}`;
-    result += `\r\nContent-Disposition: form-data; name="${i}"`;
-    result += '\r\n';
-    result += `\r\n${params[i]}`
-  }
-  // 如果obj不为空，则最后一行加上boundary
-  if (result) {
-    result += `\r\n--${boundary}`
-  }
-  return result
+			// dataStopType 报告的结束类型
+			// dataType 报告的类型
+			具体上传规则参考“报告使用文档”
 }
 
 ```

@@ -10,7 +10,9 @@ Page({
     heartBeat: null,
     mode:0,
     LiveSpoMonitor:null,
-    LiveSleep:null
+    LiveSleep:null,
+    bpData:null,
+    binData:null
   },
   /**
    * 生命周期函数--监听页面加载
@@ -88,21 +90,24 @@ Page({
       },
       //收取睡眠
       onSyncMonitorDataComplete: (bytes, dataStopType, dataType, deviceInfo) => {
-        console.log('onSyncMonitorDataComplete',bytes);
+        console.log('onSyncMonitorDataComplete',bytes,'dataStopType',dataStopType,'dataType',dataType);
+        this.setData({
+          binData:bytes
+        })
         wx.hideLoading()
         // const DeviceInfo = {
-        //   mac: deviceInfo.mac,
-        //   sn: deviceInfo.sn,
-        //   swVer: deviceInfo.swVer,
+        //   mac: 'E0:69:65:61:5E:A9',
+        //   sn: "P11G22101000011",
+        //   swVer: "6.0.12740",
         // };
         // const reportType = {
-        //   dataType: dataType,
-        //   dataStopType: dataStopType,
+        //   dataType: 1,
+        //   dataStopType: 0,
         // };
         // const institutionId = "5d5ce86aba39c800671c5a89";
         // // 组织formdata需要
         // const boundary = `----MegaRing${new Date().getTime()}`;
-        //构建formdata
+        // // 构建formdata
         // function createFormData(params = {}, boundary = "") {
         //   let result = "";
         //   for (let i in params) {
@@ -125,8 +130,8 @@ Page({
         //   },
         //   boundary
         // );
-        // console.log('formData',formData);
-        // request的options
+        // // console.log('formData',formData);
+        // // request的options
         // const options = {
         //   method: "POST",
         //   url: "https://server-mhn.megahealth.cn/upload//uploadBinData",
