@@ -345,6 +345,15 @@ Page({
   getBP(){
       this.data.client.syncBpAndHrvData(1)
   },
+  setBPCalibration(){
+    const arr=[
+      [100,60,8],
+      [100,60,10],
+      [100,60,12],
+      [100,60,16]
+    ]
+    this.data.client.setBPCalibration(arr)
+  },
   getHRV(){
       this.data.client.syncBpAndHrvData(2)
   },

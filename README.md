@@ -180,6 +180,11 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
     - 开启/关闭脉诊(time 默认 1000ms)
 
+  - setBPCalibration(BPCalibrationArr)
+
+    - [[sbp1,dbp1, hour1], [sbp2,dbp2, hour2], [sbp3,dbp3, hour3], [sbp4,dbp4, hour4] ]
+    - hour 范围0-23
+
   - enableMonitor(enable）
     - 开启血氧监测模式
     - syncData()
@@ -434,5 +439,11 @@ ERROR_BIND                      : 40000,
 	数据回调:onSyncMonitorDataComplete
 	无数据回调:onSyncNoDataOfMonitor
 	进度回调:onSyncingDataProgress
+````
+
+## 1.4.5
+
+````
+1.新增BP校准（校准需要在开启睡眠前）
 ````
 

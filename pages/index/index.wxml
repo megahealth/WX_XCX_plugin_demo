@@ -64,8 +64,9 @@
   </view>
   <view class="bt2">
       <button bindtap="getBP" data-enable="true">收取BP</button>
-      <button bindtap="getHRV" data-enable="false">收取HRV</button>
+      <button bindtap="setBPCalibration">设置BP校准</button>
   </view>
+  <button bindtap="getHRV" data-enable="false">收取HRV</button>
   <view>
     <button bindtap="discover">解绑</button>
   </view>
