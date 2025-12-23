@@ -67,6 +67,7 @@
       <button bindtap="setBPCalibration">设置BP校准</button>
   </view>
   <button bindtap="getHRV" data-enable="false">收取HRV</button>
+  <button class="btn" bindtap="getCrashLog">收取crashLog</button>
   <view>
     <button bindtap="discover">解绑</button>
   </view>

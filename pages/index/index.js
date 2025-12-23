@@ -218,6 +218,18 @@ Page({
         );
         this.setData({LiveSpoMonitor:v2LiveSpoMonitor})
       },
+      onCrashLogReceived:(byte)=>{
+        const u8s2hex = (u8s) => {
+          var hexArr = Array.prototype.map.call(
+            u8s,
+            function (bit) {
+              return ('00' + bit.toString(16)).slice(-2)
+            }
+          )
+          return hexArr.join(' ');
+        }
+        console.log('onCrashLogReceived',u8s2hex(byte));
+      },
       //设置个人信息（）
       onSetUserInfo: () => {
         // age, gender, height, weight, step size
@@ -323,6 +335,9 @@ Page({
       this.data.client.setPulseMode(false)
     }
     console.log(`output->event.currentTarget.dataset`,event.currentTarget.dataset)
+  },
+  getCrashLog(){
+    this.data.client.setGetCrashLog()
   },
   getData(){
     // if(![0,1,2].includes(this.data.heartBeat.deviceStatus)){
