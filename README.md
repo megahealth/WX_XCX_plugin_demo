@@ -180,6 +180,10 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
     - 开启/关闭脉诊(time 默认 1000ms)
 
+  - getV2Model()
+
+    - 获取当前指环的模式
+
   - setBPCalibration(BPCalibrationArr)
 
     - [[sbp1,dbp1, hour1], [sbp2,dbp2, hour2], [sbp3,dbp3, hour3], [sbp4,dbp4, hour4] ]
@@ -220,6 +224,20 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
     - status 参考 STATUS_BATT 列表
 
   - status 参考 STATUS_BATT 列表
+
+  - onV2ModeReceived:({mode})=>{}
+
+     - 0 默认模式
+  
+     - 1 睡眠监测模式
+
+     - 2 运动模式
+
+     - 3 空闲模式
+
+     - 4 实时血氧
+
+     - 5 bp模式
 
   - onTokenReceived: (token) => {}
 
@@ -279,13 +297,13 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - onV2LiveSleep: v2LiveSleep => {
 
-     pr:心率,
+    pr:心率,
 
-     spo:血氧，
+    spo:血氧，
 
-     status：实时值状态指示,
+    status：实时值状态指示,
 
-     duration：持续时长（s）
+    duration：持续时长（s）
 
     }
 
@@ -295,7 +313,7 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - onV2LiveSpoMonitor: v2LiveSpoMonitor => {
 
-     pr,spo,status (同上)
+    pr,spo,status (同上)
 
     }
 
@@ -303,26 +321,26 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - ontPulse: (byte) => {
 
-     收到脉诊实时原始数据;
+    收到脉诊实时原始数据;
 
     }
 
   - onSetUserInfo: () => {}
 
     - 设置用户信息 【 必须预设一个用户信息，否者每次连接都会被认为是新用户 ，提示晃动戒指】
-
+  
   - onSetUserInfo() { client.setUserInfo(25, 1, 170, 60, 0 ) } 年龄、性别、身高、体重、步长
-
+  
   - onIdle: () => {}
-
+  
     连接进入空闲
-
+  
   - onDeviceInfoUpdated: deviceInfo => {},
-
+  
     onidle 触发前的 onDeviceInfoUpdated，有 isRunning，代表处于监测模式
-
+  
   - onRawdataReceiving: (count, bleCount, rawdataDuration) => {}
-
+  
   - onRawdataComplete: info => {},
     onDfuProgress: progress => {}
 

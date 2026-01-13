@@ -45,6 +45,15 @@ Page({
           })
         }
       },
+      onV2ModeReceived:({mode})=>{
+        console.log('mode',mode);
+        // mode 0 默认模式
+        // mode 1 睡眠监测模式
+        // mode 2 运动模式
+        // mode 3 空闲模式
+        // mode 4 实时血氧
+        // mode 5 bp模式
+      },
       //电量变化
       onBatteryChanged: (value, status) => {
         const beat = {
@@ -80,7 +89,6 @@ Page({
       onError: (status) => {
         console.log("onError: ", status);
       },
-      onCrashLogReceived: () => {},
       //进度
       onSyncingDataProgress: (progress) => {
         console.log("onSyncingDataProgress... " + progress);
@@ -371,6 +379,9 @@ Page({
   },
   getHRV(){
       this.data.client.syncBpAndHrvData(2)
+  },
+  getModel(){
+    this.data.client.getV2Model()
   },
   discover(){
     this.data.client.disconnect()
