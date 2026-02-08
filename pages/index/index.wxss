@@ -1,17 +1,65 @@
-/* pages/index/index.wxss */
-.bt2,.bt3{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 5px 0;
+.page {
+  padding: 24rpx;
+  background: #f6f7f9;
 }
 
-.bt2 button{
-  width: 45%;
-  padding: 2px 5px;
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.05);
 }
-.bt3 button{
-  width: 30%;
-  padding: 2px 5px;
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+  color: #333;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8rpx 0;
+  font-size: 26rpx;
+  color: #444;
+}
+
+.label {
+  color: #888;
+}
+
+.tag {
+  background: #eef3ff;
+  color: #3f6df6;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+
+.status {
+  color: #3bb54a;
+}
+
+.btn-group {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.btn-group button {
+  flex: 1;
+}
+
+.btn-group.danger button {
+  background: #fff0f0;
+  color: #d93026;
+}
+
+.unbind {
+  margin-top: 16rpx;
+  background: #d93026;
+  color: #fff;
 }

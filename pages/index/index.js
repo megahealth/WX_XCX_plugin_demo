@@ -14,6 +14,16 @@ Page({
     bpData:null,
     binData:null
   },
+
+  scrollModal(longText,success=()=>{}) {
+    wx.showModal({
+      title: '通知',
+      content: longText,
+      confirmText:  '确认',
+      cancelText: '取消',
+      success
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -47,6 +57,12 @@ Page({
       },
       onV2ModeReceived:({mode})=>{
         console.log('mode',mode);
+        if(mode===0)this.scrollModal("mode: 默认模式") 
+        if(mode===1)this.scrollModal("mode: 睡眠监测模式") 
+        if(mode===2)this.scrollModal("mode: 运动模式") 
+        if(mode===3)this.scrollModal("mode: 空闲模式") 
+        if(mode===4)this.scrollModal("mode: 实时血氧") 
+        if(mode===5)this.scrollModal("mode: bp模式") 
         // mode 0 默认模式
         // mode 1 睡眠监测模式
         // mode 2 运动模式
@@ -103,6 +119,7 @@ Page({
           binData:bytes
         })
         wx.hideLoading()
+        this.scrollModal("报告收取完成")
         // const DeviceInfo = {
         //   mac: 'E0:69:65:61:5E:A9',
         //   sn: "P11G22101000011",
@@ -167,19 +184,23 @@ Page({
       },
       //日常
       onSyncDailyDataComplete: (bytes) => {
+        this.scrollModal("报告收取完成")
         console.log("onSyncDailyDataComplete: ", bytes);
       },
       //无数据
       onSyncNoDataOfMonitor: () => {
         // wx.hideLoading()
-        wx.showToast({
-          title: 'no Data',
-        })
+        // wx.showToast({
+        //   title: 'no Data',
+        // })
+        this.scrollModal("no Data")
         console.log("onSyncNoDataOfMonitor");
       },
       //无日常
       onSyncNoDataOfDaily: () => {
         wx.hideLoading()
+        // wx.showToast({title:"无数据"})
+        this.scrollModal("no Data")
         console.log("onSyncNoDataOfDaily");
       },
       onV2BootupTimeReceived: () => {},
@@ -236,6 +257,8 @@ Page({
           )
           return hexArr.join(' ');
         }
+        // wx.showToast({title:`onCrashLogReceived ${v}`})
+        this.scrollModal(`${u8s2hex(byte)}`)
         console.log('onCrashLogReceived',u8s2hex(byte));
       },
       //设置个人信息（）
@@ -295,6 +318,7 @@ Page({
     if(event.currentTarget.dataset.enable==='false'){
       this.data.client.enableRealTimeNotify(false)
     }
+
   },
   onLiveSpoMonitor(event){
     // console.log(this.data.heartBeat.deviceStatus===0);
@@ -355,9 +379,10 @@ Page({
     //   return 
     // }
     if(this.data.LiveSleep){
-      wx.showToast({
-        title: '请关闭监测',
-      })
+      this.scrollModal("请关闭监测")
+      // wx.showToast({
+      //   title: '请关闭监测',
+      // })
     }else{
       this.data.client.syncData()
     }
@@ -382,6 +407,29 @@ Page({
   },
   getModel(){
     this.data.client.getV2Model()
+  },
+  clearSleepReport(){
+    // console.log('删除睡眠报告');
+    this.scrollModal("删除睡眠报告",()=>{
+      this.data.client.clearReport(1)
+    })
+   
+  },
+  clearBPReport(){
+    // console.log('删除BP报告');
+    this.scrollModal("删除BP报告",()=>{
+      this.data.client.clearReport(2)
+    })
+  },
+  clearHRVReport(){
+    // console.log('删除HRV报告');
+    this.scrollModal("删除HRV报告",()=>{
+      this.data.client.clearReport(10)
+    })
+   
+  },
+  enabledebug(){
+    this.data.client.enableDebug(true)
   },
   discover(){
     this.data.client.disconnect()

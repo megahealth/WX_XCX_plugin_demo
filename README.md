@@ -167,11 +167,14 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - startWithToken(userId, token)
     - 用户 id 格式：12 个 byte 组成的十六进制字符串，总长 24。若不关心 userid，可使用模板"5837288dc59e0d00577c5f9a"，或 12 个"00"
+    
   - setUserInfo(age, gender, height, weight, stepLength)
     - 女(0), 男(1); 身高(cm); 体重(kg); 步长(cm)
     - 例：client.setUserInfo(25, 1, 170, 60, 0)
+    
   - enableRealTimeNotify(enable)
     - 打开全局实时通道，接收实时数据（血氧、电量值，电量状态等），可重复调用
+    
   - enableLive(enable)
 
     开启血氧实时模式
@@ -187,7 +190,18 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
   - setBPCalibration(BPCalibrationArr)
 
     - [[sbp1,dbp1, hour1], [sbp2,dbp2, hour2], [sbp3,dbp3, hour3], [sbp4,dbp4, hour4] ]
+
     - hour 范围0-23
+
+  - clearReport
+
+    - clearReport(1) 删除睡眠报告
+    - clearReport(2) 删除BP/运动报告
+    - clearReport(10) 删除HRV报告
+
+  - enabledebug
+
+    - 开启调试
 
   - enableMonitor(enable）
     - 开启血氧监测模式
@@ -464,4 +478,11 @@ ERROR_BIND                      : 40000,
 ````
 1.新增BP校准（校准需要在开启睡眠前）
 ````
+
+## 1.6.1
+
+```
+1.更新版本
+2.新增删除报告的接口
+```
 
