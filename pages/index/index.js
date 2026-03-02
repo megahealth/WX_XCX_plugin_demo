@@ -12,7 +12,8 @@ Page({
     LiveSpoMonitor:null,
     LiveSleep:null,
     bpData:null,
-    binData:null
+    binData:null,
+    time:0,
   },
 
   scrollModal(longText,success=()=>{}) {
@@ -108,6 +109,11 @@ Page({
       //进度
       onSyncingDataProgress: (progress) => {
         console.log("onSyncingDataProgress... " + progress);
+        if(this.data.time===0){
+          this.setData({
+            time:new Date().getTime()
+          })
+        }
         wx.showLoading({
           title: progress,
         })
@@ -120,6 +126,11 @@ Page({
         })
         wx.hideLoading()
         this.scrollModal("报告收取完成")
+        const endTime=new Date().getTime()-this.data.time
+        console.log("endTime",endTime)
+        this.setData({
+          time:0
+        })
         // const DeviceInfo = {
         //   mac: 'E0:69:65:61:5E:A9',
         //   sn: "P11G22101000011",

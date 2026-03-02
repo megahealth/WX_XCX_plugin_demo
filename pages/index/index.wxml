@@ -79,8 +79,12 @@
 
   <view class="btn-group">
     <button size="mini" bindtap="getModel">获取模式</button>
+    <button size="mini" bindtap="setBPCalibration">设置BP校准</button>
+  </view>
+  <view class="btn-group">
     <button size="mini" bindtap="enabledebug">开启debug</button>
   </view>
+  
 
   <view class="btn-group danger">
     <button size="mini" bindtap="getCrashLog">获取chrshlog</button>
