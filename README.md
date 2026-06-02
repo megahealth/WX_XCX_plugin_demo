@@ -1,9 +1,5 @@
 # ble-wxplugin-js-demo
 
-node:v12.22.12
-
-taro：1.3.12
-
 ## 快速开始
 
 1. 微信小程序引入插件
@@ -16,7 +12,7 @@ taro：1.3.12
 
 5. 绑定戒指(首次连或 token 不匹配，需要晃动戒指才能连上。收到 token 后，用 token 连即可跳过晃动)
 
-   - 非绑定设备状态下: client.startWithToken('5837288dc59e0d00577c5f9a', '0,0,0,0,0,0')
+   - 非绑定设备状态下: client.startWithoutToken('5837288dc59e0d00577c5f9a',device.mac)
    - 已绑定设备状态下: client.startWithToken('5837288dc59e0d00577c5f9a', token)
    - 注意：如果 token 不匹配，戒指之前的监测就会停止（数据还在，收取报告会上传）。
 
@@ -130,7 +126,7 @@ client.connect(device.name, device.deviceId, device.advertisData).then(res => {
     // no cached token, just use '0,0,0,0,0,0';
     // 没有token或不匹配时，蓝牙插件会自动调用设置好的genMegaCallback中的onKnockDevice回调方法，
     // 客户端可以在onKnockDevice中写用以提示用户晃动戒指的部分。
-    client.startWithToken('5837288dc59e0d00577c5f9a', '0,0,0,0,0,0').then(
+    client.startWithoutToken('5837288dc59e0d00577c5f9a', device.mac).then(
         res => console.log(res)
     ).catch(err => console.error(err));
 }).catch(err => console.error(err))
@@ -484,5 +480,12 @@ ERROR_BIND                      : 40000,
 ```
 1.更新版本
 2.新增删除报告的接口
+```
+
+## 1.6.4
+
+```
+1.修复没有token导致的异常 
+2.修复重连导致的错误
 ```
 
