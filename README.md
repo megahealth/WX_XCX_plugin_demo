@@ -462,7 +462,7 @@ ERROR_BIND                      : 40000,
 2.新增HRV收取
 	接口 client.syncBpAndHrvData(1)
 3.新增BP收取
-  接口 client.syncBpAndHrvData(1)
+  接口 client.syncBpAndHrvData(2)
 4.HRV和BP数据
 	数据回调:onSyncMonitorDataComplete
 	无数据回调:onSyncNoDataOfMonitor
