@@ -14,6 +14,10 @@ Page({
     bpData:null,
     binData:null,
     time:0,
+    periodStartTime:'',
+    periodDurationMinutes:480,
+    periodType:0,
+    periodSetting:false,
   },
 
   scrollModal(longText,success=()=>{}) {
@@ -232,7 +236,15 @@ Page({
         })
         console.log("onHeartBeatReceived: ", heartBeat);
       },
-      onV2PeriodSettingReceived: () => {},
+      //设置定时睡眠结果
+      onSetPeriodReceived: (a) => {
+        console.log("onSetPeriodReceived: ", a);
+      },
+      //查询定时睡眠结果
+      onPeriodSettingReceived: (a) => {
+        // status 0 无效 1空闲 2运行 4挂起
+        console.log("onPeriodSettingReceived: ", a);
+      },
       onV2PeriodEnsureResponsed: () => {},
       onV2PeriodReadyWarning: () => {},
       onLiveDataReceived: (live) => {
@@ -420,6 +432,45 @@ Page({
   getModel(){
     this.data.client.getV2Model()
   },
+  togglePeriodSetting(event){
+    this.setData({periodSetting:event.currentTarget.dataset.enable==='true'})
+  },
+  onPeriodTimeChange(event){
+    this.setData({periodStartTime:event.detail.value})
+  },
+  makeSetPeriod(event){
+    const time = this.data.periodStartTime
+    if(!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(time)){
+      this.scrollModal("请选择有效的开始时间")
+      return
+    }
+    const single = event.detail.value.single
+    if(single!=='0' && single!=='1'){
+      this.scrollModal("请选择单次或周期定时")
+      return
+    }
+    const duration = Number(event.detail.value.durationMinutes)
+    const maxTime = duration*60
+    if(!Number.isSafeInteger(duration) || duration<=0 || maxTime>0xffffffff){
+      this.scrollModal("持续时长请输入1至71582788分钟的整数")
+      return
+    }
+    const [hour,min] = time.split(':').map(Number)
+    const now = new Date()
+    const start = new Date(now.getTime())
+    start.setHours(hour,min,0,0)
+    //今天的开始时间已过时，安排到明天
+    if(start <= now) start.setDate(start.getDate()+1)
+    const startTime = Math.ceil((start.getTime()-now.getTime())/1000)
+    this.data.client.makeSetPeriod(1,Number(single),maxTime,startTime)
+    this.setData({periodType:Number(single),periodDurationMinutes:duration,periodSetting:false})
+  },
+  closePeriod(){
+    this.data.client.makeSetPeriod(0)
+  },
+  onPeriodSettingReceived(){
+    this.data.client.onPeriodSettingReceived()
+  },
   clearSleepReport(){
     // console.log('删除睡眠报告');
     this.scrollModal("删除睡眠报告",()=>{
@@ -442,6 +493,9 @@ Page({
   },
   enabledebug(){
     this.data.client.enableDebug(true)
+  },
+  disabledebug(){
+    this.data.client.enableDebug(false)
   },
   discover(){
     this.data.client.disconnect()

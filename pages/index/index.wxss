@@ -49,6 +49,12 @@
   margin-bottom: 16rpx;
 }
 
+.period-duration {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+}
+
 .btn-group button {
   flex: 1;
 }

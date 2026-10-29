@@ -68,6 +68,36 @@
   </view>
 
   <view class="btn-group">
+    <button size="mini" bindtap="togglePeriodSetting" data-enable="true">设置定时睡眠</button>
+    <button size="mini" bindtap="onPeriodSettingReceived">查询定时睡眠</button>
+    <button size="mini" bindtap="closePeriod">关闭定时</button>
+  </view>
+
+  <form wx:if="{{periodSetting}}" bindsubmit="makeSetPeriod">
+    <view class="row">
+      <text class="label">定时类型</text>
+      <radio-group name="single">
+        <label><radio value="0" checked="{{periodType===0}}" />单次</label>
+        <label><radio value="1" checked="{{periodType===1}}" />周期</label>
+      </radio-group>
+    </view>
+    <view class="row">
+      <text class="label">开始时间</text>
+      <picker mode="time" value="{{periodStartTime}}" bindchange="onPeriodTimeChange">
+        <view>{{periodStartTime || '请选择开始时间'}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <label class="label" for="periodDuration">持续时长（分钟）</label>
+      <input id="periodDuration" class="period-duration" name="durationMinutes" type="number" value="{{periodDurationMinutes}}" placeholder="请输入持续分钟数" />
+    </view>
+    <view class="btn-group">
+      <button size="mini" form-type="submit">确认设置</button>
+      <button size="mini" bindtap="togglePeriodSetting" data-enable="false">取消</button>
+    </view>
+  </form>
+
+  <view class="btn-group">
     <button size="mini" bindtap="getData">收取数据</button>
     <button size="mini" bindtap="quickReport">快速收取</button>
   </view>
@@ -83,6 +113,7 @@
   </view>
   <view class="btn-group">
     <button size="mini" bindtap="enabledebug">开启debug</button>
+    <button size="mini" bindtap="disabledebug">关闭debug</button>
   </view>
   
 

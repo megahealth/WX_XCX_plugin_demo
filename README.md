@@ -189,15 +189,39 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
     - hour 范围0-23
 
+  - makeSetPeriod(enable, single, maxTime, startTime)
+
+    - 1.7.0 新增，设置定时睡眠，参数默认均为0
+    - enable：定时开关，0 关闭，1 开启
+    - demo 中点击“关闭定时”，调用 client.makeSetPeriod(0)，结果通过 onSetPeriodReceived 回调输出到控制台
+    - single：定时类型，0 单次定时，1 周期定时
+    - maxTime：睡眠持续时长，单位秒，例如8小时传 28800 (8 * 60 * 60)
+    - startTime：距离启动的剩余时间，单位秒，即延迟多少秒后启动
+    - 例：client.makeSetPeriod(1, 0, 8 * 60 * 60, 2 * 60 * 60)，2小时后启动一次8小时的定时睡眠
+    - demo 中点击“设置定时睡眠”，选择定时类型（单次/周期，默认单次）、开始时间（时、分），填写持续时长（分钟），再点击“确认设置”；根据手机当前本地时间计算 startTime，将持续分钟数乘以60得到 maxTime，调用 client.makeSetPeriod(1, single, maxTime, startTime)，单次传0，周期传1
+    - 所选时间今天已过或等于当前时间时，安排到明天；延迟秒数向上取整；周期定时的重复规则以固件协议为准
+    - 持续时长默认480分钟（8小时），需填写正整数且换算后的秒数不能超过32位无符号整数上限；具体设备支持的时长范围以固件为准
+    - 例：当前时间为20:30:00，选择22:00，startTime 为5400秒；当前时间为23:30:00，选择01:00，startTime 也为5400秒
+    - 选择定时类型、开始时间、修改持续时长或点击“取消”均不发送设置命令，只有点击“确认设置”并通过校验后发送；设置结果通过 onSetPeriodReceived 回调输出到控制台
+
+  - onPeriodSettingReceived()
+
+    - 1.7.0 新增，查询定时睡眠，无参数，例：client.onPeriodSettingReceived()
+    - demo 中点击“查询定时睡眠”发送查询，结果通过 callback 中的同名 onPeriodSettingReceived 回调输出到控制台
+    - 需要在 client.setCallback 中预先设置结果回调，demo 已在 genMegaCallback 中设置
+    - 以上两个方法当前不返回 Promise，通过回调接收设备操作结果；操作状态见 onOperationStatus
+    - 使用前需完成设备连接和绑定，进入 onIdle；小程序需使用包含这两个接口的插件版本
+
   - clearReport
 
     - clearReport(1) 删除睡眠报告
     - clearReport(2) 删除BP/运动报告
     - clearReport(10) 删除HRV报告
 
-  - enabledebug
+  - enableDebug(enable)
 
-    - 开启调试
+    - 开启/关闭调试，true 开启，false 关闭
+    - demo 中点击“开启debug”调用 client.enableDebug(true)，点击“关闭debug”调用 client.enableDebug(false)
 
   - enableMonitor(enable）
     - 开启血氧监测模式
@@ -297,46 +321,63 @@ const onSyncMonitorDataComplete = (bytes, dataStopType, dataType, deviceInfo) =>
 
   - onHeartBeatReceived: heartBeat => {}
 
-  - onV2PeriodSettingReceived: v2PeriodSetting => {}
+  - onSetPeriodReceived: (res) => {}
 
+    - 设置定时睡眠成功后的回调，对应 client.makeSetPeriod
+    - res={ status, period, nextTime, hour, min, sec, maxTime }
+    - status：定时状态，0 无效，1 空闲，2 运行，4 挂起
+    - period：定时类型，0 单次定时，1 周期定时
+    - hour、min、sec：设备返回的定时时间，分别为时、分、秒
+    - maxTime：睡眠持续时长，单位秒
+    - nextTime：设备返回的下次定时值，具体含义和单位以固件协议为准
+
+  - onPeriodSettingReceived: (res) => {}
+
+    - 查询定时睡眠成功后的回调，对应 client.onPeriodSettingReceived()
+    - res={ status, periodType, hour, min, sec, maxTime }
+    - status：定时状态，0 无效，1 空闲，2 运行，4 挂起
+    - periodType：定时类型，0 单次定时，1 周期定时；设置结果中的对应字段名为 period
+    - hour、min、sec：设备返回的定时时间，分别为时、分、秒
+    - maxTime：睡眠持续时长，单位秒
+    
   - onV2PeriodEnsureResponsed: a => {}
-
+  
   - onV2PeriodReadyWarning: a => {}
-
+  
   - onLiveDataReceived: live => {}
-
+  
   - onV2LiveSleep: v2LiveSleep => {
-
+  
     pr:心率,
-
+  
     spo:血氧，
-
+  
     status：实时值状态指示,
-
+  
     duration：持续时长（s）
-
+  
     }
-
+  
     收到血氧监测模式 live 数据; status 参考 STATUS_LIVE 列表
-
+  
   - onV2LiveSport: v2LiveSport => {}
-
+  
   - onV2LiveSpoMonitor: v2LiveSpoMonitor => {
-
+  
     pr,spo,status (同上)
-
+  
     }
-
+  
     收到血氧实时模式 live 数据; status 参考 STATUS_LIVE 列表
-
+  
   - ontPulse: (byte) => {
-
+  
     收到脉诊实时原始数据;
-
+  
     }
-
+  
   - onSetUserInfo: () => {}
-
+  
     - 设置用户信息 【 必须预设一个用户信息，否者每次连接都会被认为是新用户 ，提示晃动戒指】
   
   - onSetUserInfo() { client.setUserInfo(25, 1, 170, 60, 0 ) } 年龄、性别、身高、体重、步长
@@ -411,7 +452,7 @@ ERROR_BIND                      : 40000,
 ```
   "plugins": {
     "megable": {
-      "version": "1.2.0",//插件版本
+      "version": "1.7.0",//插件版本
       "provider": "wxf4fa9b179dfd7bca" //插件id
     }
   },
@@ -487,5 +528,15 @@ ERROR_BIND                      : 40000,
 ```
 1.修复没有token导致的异常 
 2.修复重连导致的错误
+```
+
+## 1.7.1
+
+```
+1.新增定时睡眠设置 client.makeSetPeriod(enable, single, maxTime, startTime)
+  设置结果回调 onSetPeriodReceived
+2.新增定时睡眠查询 client.onPeriodSettingReceived()
+  查询结果回调 onPeriodSettingReceived
+  
 ```
 
